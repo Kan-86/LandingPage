@@ -1,0 +1,77 @@
+﻿@model AcmeCorporation.Areas.Identity.Data.UserProfile
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>UserProfile</h4>
+    <hr />
+
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BirthDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BirthDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+    </dl>
+
+    @foreach (var item in Model.UserProducts)
+    {
+        <div class="card-columns">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(model => item.ProductName)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Product information:
+                    </h6>
+                    <p class="card-text">
+                        <div>
+                            @Html.DisplayNameFor(model => item.ProductSerialNumber.ValidForLottery)
+                            @Html.DisplayFor(model => item.ProductSerialNumber.ValidForLottery)
+                        </div>
+                        <div>
+                            @Html.DisplayNameFor(model => item.ProductSerialNumber.ProductSerialNumber)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(model => item.ProductSerialNumber.ProductSerialNumber)
+                        </div>
+                    </p>
+                    <a asp-action="Edit" asp-route-id="@Model.Id">
+                        Edit
+                    </a>
+                    <a asp-action="Index">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

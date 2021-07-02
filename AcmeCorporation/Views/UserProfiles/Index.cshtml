@@ -1,0 +1,84 @@
+﻿
+@using X.PagedList.Mvc.Core;
+
+@model X.PagedList.IPagedList<AcmeCorporation.Areas.Identity.Data.UserProfile>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using Microsoft.AspNetCore.Identity
+@using AcmeCorporation.Areas.Identity.Data
+@inject SignInManager<User> SignInManager
+@{
+    ViewBag.Title = "UsersInDraw"; ;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}
+@if (SignInManager.IsSignedIn(User))
+{
+        <p>
+            @Html.ActionLink("Draw Form", "DrawForm")
+        </p>
+
+    @using (Html.BeginForm("Index", "UserProfiles", FormMethod.Get))
+    {
+        <p>
+            Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().UserInDraw.HasEnteredAmount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInDraw.HasEnteredAmount)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
